@@ -1,0 +1,30 @@
+<html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title>Success!</title>
+      
+    </head>
+
+    <style>
+        p {
+            margin: 0px 0px 0px 0px;
+        }
+
+        h4 {
+            margin-bottom: 0px;
+        }
+    </style>
+    <body>
+      <h2>Success!</h2>
+      <p>The data you entered is valid. Thank you! </p>
+      <p> Logged In is {{session['logged_in']}}</p>
+      <h4><u>Current Data Entered:</u></h4>
+      {% for entry in all_data: %}
+         <p>{{ entry['first_name'] }} {{ entry['last_name'] }} {{ entry['email'] }} {{ entry['password'] }}  <u>SALT</u> {{ entry['salt'] }}</p>
+      {% endfor %}
+
+      
+    </body>
+</html>

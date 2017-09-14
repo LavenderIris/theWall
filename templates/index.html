@@ -1,0 +1,85 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <title>The Silk Road Reborn</title>
+</head>
+<style type="text/css">
+	span {
+		display: block;
+		padding: 5px 0px 5px 0px;
+	}
+
+	p{
+		margin: 0px;
+	}
+
+    .i_b{
+        display: inline-block;
+        vertical-align: top;
+        position: relative;
+        left: 20%;
+        top: 23px;
+    }
+
+    .l_m{
+        margin-left: 10%;
+    }
+
+    h2{
+        margin-left: 30%;
+    }
+
+    .bottom{
+        display: block;
+        position: relative;
+        top: 40px;
+    }
+
+    button{
+        background-color: #DDDEDF;
+    }
+</style>
+
+<body>
+    
+
+    <div class='i_b'>
+        <h2>Register</h2>
+   
+        <form action='/register' method='post'>
+            <span>First Name: <input type='text' name='first_name'> </span>
+            <span>Last Name: <input type='text' name='last_name'> </span>
+            <span> Email: <input type='text' name='email'></span>
+            <span> Password: <input type='password' name='password'></span>
+            <span> Confirm Password: <input type='password' name='confirm_password'></span>
+            
+            <button type='submit'>Register</button>
+        </form>
+    </div>
+
+    <div class='i_b l_m'>
+        <h2>Login</h2>
+        <form action='/login' method='post'>
+            <span> Email: <input type='text' name='email'></span>
+            <span> Password: <input type='password' name='password'></span>
+            <button type='submit'>Login</button>
+        </form>
+    </div>
+
+    
+    <br>
+    <div class="bottom">
+    {% with my_messages = get_flashed_messages(with_categories=true) %}
+        {% if my_messages %}
+            {% for error, my_message in my_messages %}
+                    <p>{{error}}  Reason: {{my_message}}  </p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    </div>
+
+</body>
+
+</html>
+
+

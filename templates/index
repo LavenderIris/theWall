@@ -1,0 +1,50 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <title>Login Page</title>
+</head>
+<style type="text/css">
+	span {
+		display: block;
+		padding: 5px 0px 5px 0px;
+	}
+
+	p{
+		margin: 0px;
+	}
+</style>
+
+<body>
+    <h1>Login or Register</h1>
+    <h3>Login</h3>
+    <form action='/login' method='post'>
+        <span> Email: <input type='text' name='email'></span>
+        <span> Password: <input type='text' name='password'></span>
+        
+        <input type='submit' value='Login'>
+    </form>
+    
+    <h3>Register</h3>
+    <form action='/is_valid' method='post'>
+        <span>First Name: <input type='text' name='first_name'> </span>
+        <span>Last Name: <input type='text' name='last_name'> </span>
+        <span> Email: <input type='text' name='email'></span>
+        <span> Password: <input type='text' name='password'></span>
+        <span> Confirm Password: <input type='text' name='confirm_password'></span>
+        
+        <input type='submit' value='Register'>
+    </form>
+    <br>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+  		{% if messages %}
+    		{% for error, message in messages %}
+      			<p>{{error}}  Reason: {{message}}  </p>
+    		{% endfor %}
+  		{% endif %}
+	{% endwith %}
+
+</body>
+
+</html>
+
+
