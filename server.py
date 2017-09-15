@@ -145,13 +145,31 @@ def login():
 
 @app.route('/show_board')
 def show_board():
-    query = "SELECT messages.id, CONCAT(users.first_name,' ' ,users.last_name) AS full_name, messages.message, DATE_FORMAT(messages.updated_at, '%m %d %Y %l:%i %p') AS updated_at FROM messages JOIN users ON messages.user_id=users.id ORDER BY messages.updated_at DESC"
+    if 'logged_in' not in session:
+        return redirect('/')
+    elif session['logged_in'] == False:
+        return redirect('/')
+    query = "SELECT messages.user_id, messages.id, CONCAT(users.first_name,' ' ,users.last_name) AS full_name, messages.message, DATE_FORMAT(messages.updated_at, '%m %d %Y %l:%i %p') AS updated_at FROM messages JOIN users ON messages.user_id=users.id ORDER BY messages.updated_at DESC"
     results = mysql.query_db(query)
     query = "SELECT comments.message_id, CONCAT(users.first_name,' ' ,users.last_name) AS full_name, comments.comment, DATE_FORMAT(comments.updated_at, '%m %d %Y %l:%i %p') AS updated_at FROM comments JOIN users ON comments.user_id=users.id ORDER BY comments.updated_at ASC"
     comments  = mysql.query_db(query)
   
     return render_template('messageboard.html',  all_messages = results, all_comments = comments)
 
+@app.route('/delete_message', methods=['POST'])
+def delete_message():
+    print 'got to delete'
+    data = {
+        'message_id':request.form['delete_id']
+    }
+
+    query = 'DELETE FROM comments WHERE comments.message_id = :message_id'
+    mysql.query_db(query, data)
+
+    query = 'DELETE FROM messages WHERE id=:message_id'
+    print 'DELETE QUERY', query
+    mysql.query_db(query, data)
+    return redirect('/show_board')
 
 
 @app.route('/add_message', methods=['POST'])

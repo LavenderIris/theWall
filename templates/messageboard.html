@@ -4,17 +4,22 @@
         <title></title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="css/style.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      
     </head>
 
     <style>
+
         body{
-            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-family: 'Open Sans',Arial, Verdana, Geneva, Tahoma, sans-serif;
         }
 
         #align_right{
-            margin-left: 248px;
+            margin-left: 45%;
             display: inline-block;
+            position: relative;
+            
         }
 
         .inline{
@@ -31,7 +36,7 @@
         }
 
         .m_left{
-            margin-left: 10px;
+            margin-left: 30px;
         }
 
         .box {
@@ -42,51 +47,71 @@
 
         button{
             background-color: #BEB7B7;
+            display: block;
+        }
+
+        .top{
+            background-color: #4267b2;
+            vertical-align: top;
+            color: white;
+        }
+        .i_b{
+            display: inline-block;
         }
     </style>
     <body>
-        <div>
-            <h1 class="inline">Coding Dojo</h1>
+        <div class='top'>
+            <i class="fa fa-user-circle-o fa-2x m_left"></i>
+            <h2 class="inline">BookFace Dojo</h2>
             <div id='align_right'>
                 <p class="inline">Welcome {{session['first_name']}}</p>
                 <a class="inline m_left" href="/logoff">Log Off</a>    
             </div>    
         </div>    
-        <hr>
-            <form action='/add_message' method='post'>
-                <p>Post a message:</p> 
-                <span class="block"><textarea type='text'rows="6" cols="105" name='message'></textarea></span>
-                <button type='submit'>Post a message</button>
-            </form>
-        
+
+
+        <h3>Welcome to BookFace Dojo</h3>
+        <form action='/add_message' method='post'>
+            <p>Post a message:</p> 
+            <span class="block"><textarea type='text'rows="6" cols="110" name='message'></textarea>
+            <button type='submit'>Post a message</button>
+            </span>
+        </form>
+    
 
             <!-- write the jinja code to go thru each message and display a certain way -->
 
-            <h4><u>Current Data Entered:</u></h4>
-            {% for message in all_messages: %}
-                <div class='box'>
-               <h5 class='np'>{{ message['full_name'] }} {{ message['updated_at'] }} </h5>
-               <p class='np m_left'> {{ message['message'] }}</p>
-               
-               
-                {% for c in all_comments: %}
-                <div class='box'>
-                    {% if c['message_id']==message['id'] %}
-                    <h5 class='np'>{{c['full_name']}} {{c['updated_at']}}</h5>
-                    <p class='np m_left'>{{c['comment']}}</p>
-                    {% endif %}
-                </div>
-                {% endfor %}
-                
+        {% for message in all_messages: %}
+            <div class='box'>
+            <h4 class='np i_b'>{{ message['full_name'] }} {{ message['updated_at'] }} 
+            
+            {% if message['user_id']==session['user_id'] %}
+            <form action='/delete_message' method='post' class="i_b">
+                <button type='submit' name = 'delete_id' value = {{message['id']}}> Delete</button>
+            </form>
 
-               <!-- COMMENT BOX -->
-                <form class='m_left' action='/add_comment' method='post'>
-                    <p>Comment:</p> 
-                    <span class="block"><textarea type='text'rows="6" cols="100" name='comment' value= {{message['id']}}></textarea></span>
-                    <button type='submit' name='message_id' value= {{message['id']}} >Comment</button>
-                </form>
+            {% endif %}   
+            </h4>  
+            <p class='np m_left'> {{ message['message'] }}</p>
+            
+            {% for c in all_comments: %}
+            <div class='box'>
+                {% if c['message_id']==message['id'] %}
+                <h4 class='np'>{{c['full_name']}} {{c['updated_at']}}</h4>
+                <p class='np m_left'>{{c['comment']}}</p>
+                {% endif %}
             </div>
             {% endfor %}
+            
+
+            <!-- COMMENT BOX -->
+            <form class='m_left' action='/add_comment' method='post'>
+                <p>Comment:</p> 
+                <span class="block"><textarea type='text'rows="6" cols="100" name='comment' value= {{message['id']}}></textarea></span>
+                <button type='submit' name='message_id' value= {{message['id']}} >Comment</button>
+            </form>
+        </div>
+        {% endfor %}
   
         
             

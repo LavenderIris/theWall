@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untitled</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<style>
+        
+    body{
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+    }
+
+    #align_right{
+        margin-left: 248px;
+        display: inline-block;
+    }
+
+    .inline{
+        display: inline-block;
+    }
+
+    .block{
+        display: block;
+    }
+    
+    .np {
+        padding: 0px 0px 0px 0px;
+        margin: 0px 0px 0px 0px;
+    }
+
+    .m_left{
+        margin-left: 10px;
+    }
+
+    .box {
+        margin: 20px;
+        /* border: solid 1px black; */
+        width: 700px;
+    }
+
+    button{
+        background-color: #BEB7B7;
+    }
+
+    .top{
+        background-color: #4267b2;
+        vertical-align: top;
+    }
+</style>
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header"><a class="navbar-brand navbar-link" href="#"><strong>Coding Dojo</strong></a>
+                <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+            </div>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="active" role="presentation"><a href="#">Welcome {{session['first_name']}}</a></li>
+                    <li role="presentation"><a href="/logoff">Log Off </a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <script src="src/js/jquery.min.js"></script>
+    <script src="src/bootstrap/js/bootstrap.min.js"></script>
+
+    <form action='/add_message' method='post'>
+        <p>Post a message:</p> 
+        <span class="block"><textarea type='text'rows="6" cols="105" name='message'></textarea></span>
+        <button type='submit'>Post a message</button>
+    </form>
+
+
+        <!-- write the jinja code to go thru each message and display a certain way -->
+
+    <h4><u>Current Data Entered:</u></h4>
+    {% for message in all_messages: %}
+        <div class='box'>
+        <h5 class='np'>{{ message['full_name'] }} {{ message['updated_at'] }} </h5>
+        <p class='np m_left'> {{ message['message'] }}</p>
+        
+        
+        {% for c in all_comments: %}
+        <div class='box'>
+            {% if c['message_id']==message['id'] %}
+            <h5 class='np'>{{c['full_name']}} {{c['updated_at']}}</h5>
+            <p class='np m_left'>{{c['comment']}}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+        
+
+        <!-- COMMENT BOX -->
+        <form class='m_left' action='/add_comment' method='post'>
+            <p>Comment:</p> 
+            <span class="block"><textarea type='text'rows="6" cols="100" name='comment' value= {{message['id']}}></textarea></span>
+            <button type='submit' name='message_id' value= {{message['id']}} >Comment</button>
+        </form>
+    </div>
+    {% endfor %}
+
+</body>
+
+</html>
